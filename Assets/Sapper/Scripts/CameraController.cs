@@ -20,13 +20,14 @@ public class CameraController : MonoBehaviour
 
     private void DragMoveHandler(Vector2 fingerPos, Vector2 moveDelta)
     {
-        camera.transform.Translate(new Vector3(-moveDelta.x, -moveDelta.y, 0));
+        camera.transform.Translate(new Vector3(-moveDelta.x*0.0025f, -moveDelta.y*0.0025f, 0));
     }
 
     private void PinchMoveHandler(Vector2 fingerPos1, Vector2 fingerPos2, float delta)
     {
+        print("PINCHMOVE"+delta.ToString());
         Field.localScale += new Vector3(0.001f*delta,0.001f*delta, 0);
-        Field.localScale = new Vector3(Mathf.Clamp(Field.lossyScale.x, 0.5f, 1f), Mathf.Clamp(Field.lossyScale.y, 0.5f, 1f), 0);
+        Field.localScale = new Vector3(Mathf.Clamp(Field.localScale.x, 0.5f, 1f), Mathf.Clamp(Field.localScale.y, 0.5f, 1f), 0);
     }
 
     private void OnDisable()

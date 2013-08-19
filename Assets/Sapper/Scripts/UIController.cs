@@ -43,17 +43,17 @@ public class UIController : MonoBehaviour
     }
     public void Easy()
     {
-        SapperClassic.Instance.StarGame(10,10,8);
+        SapperClassic.Instance.StarGame(8,8,8);
         _difficultChooseMenu.SetActive(false);
     }
     public void Medium()
     {
-        SapperClassic.Instance.StarGame(15, 15, 15);
+        SapperClassic.Instance.StarGame(10, 10, 10);
         _difficultChooseMenu.SetActive(false);
     }
     public void Hard()
     {
-        SapperClassic.Instance.StarGame(20, 20, 20);
+        SapperClassic.Instance.StarGame(15, 15, 12);
         _difficultChooseMenu.SetActive(false);
     }
 

@@ -26,6 +26,7 @@ public class FieldClassic
 
     public FieldClassic(int rowCount,int colCount)
     {
+        GameObject.Find("Field").GetComponent<UITable>().columns = colCount;
         MinesCount = 0;
         OpenedCells = 0;
         DeminedCells = 0;
@@ -149,15 +150,16 @@ public class FieldClassic
                 {
                     if (_field[i, j].IsMine&&!_field[i,j].IsDemine) nearMinesCount++;
                     if (_field[i, j].IsFlag/*||_field[i,j].IsDemine*/) nearFlagsCount++;
-                    if (nearFlagsCount != nearMinesCount)
-                    {
-                        Debug.Log("Flags not much mines count" + nearFlagsCount.ToString() + " " + nearMinesCount.ToString());
-                        return 0;
-                    }
+                    
                 }
                 catch { }
             }
         }
+        if (nearFlagsCount != nearMinesCount)
+                    {
+                        Debug.Log("Flags not much mines count" + nearFlagsCount.ToString() + " " + nearMinesCount.ToString());
+                        return 0;
+                    }
         for (int i = cell.Row - 1; i < cell.Row + 2; i++)
         {
             for (int j = cell.Column - 1; j < cell.Column + 2; j++)
@@ -169,6 +171,10 @@ public class FieldClassic
                     if (!_field[i, j].IsMine)
                     {
                         _field[i, j].IsClose = false;
+                        if (_field[i, j].NearMinesCount == 0)
+                        {
+                            SearchForFreeNearCells(_field[i, j]);
+                        }
                         OpenedCells++;
                     }
                     else
@@ -239,12 +245,12 @@ public class FieldClassic
     void CreateCellGameObject(CellClassic cell)
     {
        //var cellGO= GameObject.Instantiate(Resources.Load("prefabs/game/classic/cell")) as GameObject;
-        var cellGO=NGUITools.AddChild( GameObject.Find("Field").gameObject,Resources.Load("prefabs/game/classic/cell"))
+       var cellGO = NGUITools.AddChild(GameObject.Find("Field").gameObject,Resources.Load("prefabs/game/classic/cell") as GameObject);
        cellGO.GetComponent<CellViewClassic>().Model = cell;
-        cellGO.name = cell.Row.ToString() + "_" + cell.Column.ToString() + "_" + "cell";
+       cellGO.name = cell.Row.ToString() + "_" + cell.Column.ToString() + "_" + "cell";
        cellGO.transform.parent = GameObject.Find("Field").transform;
-        var cellSprite = cellGO.GetComponent<CellViewClassic>().close;
+       GameObject.Find("Field").GetComponent<UITable>().Reposition();
+      // var cellSprite = cellGO.GetComponent<CellViewClassic>().close;
        //cellGO.transform.localPosition = new Vector3(cell.Row * cellSprite.renderer.bounds.size.x, cell.Column * cellSprite.renderer.bounds.size.y, 0);
-       // cellSprite.border
     }
 }
